@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const protectedRoutes = ['/dashboard', '/analysis', '/profile', '/history'];
+const protectedRoutes = ['/analysis', '/profile', '/history'];
 const publicRoutes = ['/', '/login', '/register'];
 const authRoutes = ['/login', '/register'];
 
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   const isAuthRoute = authRoutes.includes(pathname);
 
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/analysis', request.url));
   }
 
   if (isProtectedRoute && !token) {
