@@ -37,7 +37,7 @@ export default function Header({ credits = 0 }: HeaderProps) {
               <Link
                 href="/analysis/new"
                 className={`text-sm ${
-                  pathname === '/analysis/new'
+                  pathname === '/analysis'
                     ? 'text-black'
                     : 'text-gray-600 hover:text-black'
                 }`}
