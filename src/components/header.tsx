@@ -17,7 +17,7 @@ export default function Header({ credits = 0 }: HeaderProps) {
     <header className="border-b border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-12">
-          <Link href="/" className="text-xl font-semibold">
+          <Link href="/" className="text-xl font-semibold" style={{color: '#000'}}>
             DeepDetect
           </Link>
 
@@ -53,7 +53,7 @@ export default function Header({ credits = 0 }: HeaderProps) {
             <>
               <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
                 <span className="text-sm text-gray-600">💎</span>
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium" style={{color: '#000'}}>
                   {credits} crédito{credits !== 1 ? 's' : ''}
                 </span>
               </div>
