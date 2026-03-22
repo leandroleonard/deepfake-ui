@@ -42,15 +42,16 @@ export default function RegisterPage() {
                 password: data.password,
             });
 
-            // 2. Fazer login automático após registro
             const loginRes = await api.post('/auth/login', {
                 email: data.email,
                 password: data.password,
             });
 
-            const token = loginRes.data.access_token;
-            setAuthToken(token);
-            
+            setAuthToken(
+                loginRes.data.access_token,
+                loginRes.data.refresh_token 
+            );
+
             toast.success('Conta criada com sucesso!');
             router.push('/analysis');
         } catch (error: any) {
@@ -69,14 +70,14 @@ export default function RegisterPage() {
                         <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black text-white font-bold text-lg mb-4 shadow-md">
                             D
                         </div>
-                        <h1 className="text-2xl font-semibold tracking-tight" style={{color: '#000'}}>Criar conta</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#000' }}>Criar conta</h1>
                         <p className="text-gray-500 mt-2 text-sm">Comece a detectar deepfakes gratuitamente</p>
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                         {/* Name */}
                         <div className="space-y-2">
-                            <Label htmlFor="name" style={{color: '#000'}}>Nome completo</Label>
+                            <Label htmlFor="name" style={{ color: '#000' }}>Nome completo</Label>
                             <Input
                                 id="name"
                                 type="text"
@@ -89,12 +90,12 @@ export default function RegisterPage() {
 
                         {/* Email */}
                         <div className="space-y-2">
-                            <Label htmlFor="email" style={{color: '#000'}}>Email</Label>
+                            <Label htmlFor="email" style={{ color: '#000' }}>Email</Label>
                             <Input
                                 id="email"
                                 type="email"
                                 placeholder="seu@email.com"
-                                {...register('email', { 
+                                {...register('email', {
                                     required: 'Email é obrigatório',
                                     pattern: { value: /^\S+@\S+$/i, message: 'Email inválido' }
                                 })}
@@ -105,12 +106,12 @@ export default function RegisterPage() {
 
                         {/* Password */}
                         <div className="space-y-2">
-                            <Label htmlFor="password" style={{color: '#000'}}>Senha</Label>
+                            <Label htmlFor="password" style={{ color: '#000' }}>Senha</Label>
                             <Input
                                 id="password"
                                 type="password"
                                 placeholder="••••••••"
-                                {...register('password', { 
+                                {...register('password', {
                                     required: 'Senha é obrigatória',
                                     minLength: { value: 8, message: 'Mínimo 8 caracteres' }
                                 })}
@@ -121,12 +122,12 @@ export default function RegisterPage() {
 
                         {/* Confirm Password */}
                         <div className="space-y-2">
-                            <Label htmlFor="confirmPassword" style={{color: '#000'}}>Confirmar senha</Label>
+                            <Label htmlFor="confirmPassword" style={{ color: '#000' }}>Confirmar senha</Label>
                             <Input
                                 id="confirmPassword"
                                 type="password"
                                 placeholder="••••••••"
-                                {...register('confirmPassword', { 
+                                {...register('confirmPassword', {
                                     required: 'Confirmação é obrigatória',
                                     validate: (value) => value === password || 'As senhas não coincidem'
                                 })}
