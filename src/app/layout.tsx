@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Figtree } from 'next/font/google';
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "sonner"
+import { Toaster } from "sonner";
+import { AuthProvider } from "@/context/auth-context";
 
 const figtree = Figtree({
   subsets: ['latin'],
@@ -11,7 +12,7 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: "Deepfake Detector",
-  description: "Proteja-se de contéudos manipulados",
+  description: "Proteja-se de conteúdos manipulados",
 };
 
 export default function RootLayout({
@@ -20,19 +21,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt'PT">
-      <body
-        className={`${figtree.variable} antialiased`}
-      >
+    <html lang="pt-PT">
+      <body className={`${figtree.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
 
-          <Toaster position="top-right" richColors/>
+          <Toaster position="top-right" richColors />
         </ThemeProvider>
       </body>
     </html>

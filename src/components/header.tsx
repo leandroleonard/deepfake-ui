@@ -4,20 +4,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { User } from 'lucide-react';
 import { isAuthenticated } from '@/lib/auth';
+import { useAuth } from '@/context/auth-context';
 
-interface HeaderProps {
-  credits?: number;
-}
-
-export default function Header({ credits = 0 }: HeaderProps) {
+export default function Header() {
   const pathname = usePathname();
   const auth = isAuthenticated();
+  const { user, loading } = useAuth();
 
   return (
     <header className="border-b border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-12">
-          <Link href="/" className="text-xl font-semibold" style={{color: '#000'}}>
+          <Link href="/" className="text-xl font-semibold" style={{ color: '#000' }}>
             DeepDetect
           </Link>
 
@@ -26,9 +24,7 @@ export default function Header({ credits = 0 }: HeaderProps) {
               <Link
                 href="/history"
                 className={`text-sm ${
-                  pathname === '/history'
-                    ? 'text-black'
-                    : 'text-gray-600 hover:text-black'
+                  pathname === '/history' ? 'text-black' : 'text-gray-600 hover:text-black'
                 }`}
               >
                 Suas Análises
@@ -37,9 +33,7 @@ export default function Header({ credits = 0 }: HeaderProps) {
               <Link
                 href="/analysis/new"
                 className={`text-sm ${
-                  pathname === '/analysis'
-                    ? 'text-black'
-                    : 'text-gray-600 hover:text-black'
+                  pathname === '/analysis/new' ? 'text-black' : 'text-gray-600 hover:text-black'
                 }`}
               >
                 Nova Análise
@@ -51,13 +45,20 @@ export default function Header({ credits = 0 }: HeaderProps) {
         <div className="flex items-center gap-4">
           {auth ? (
             <>
-              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
+              {/* Créditos */}
+              <Link
+                href="/credits"
+                className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
                 <span className="text-sm text-gray-600">💎</span>
-                <span className="text-sm font-medium" style={{color: '#000'}}>
-                  {credits} crédito{credits !== 1 ? 's' : ''}
+                <span className="text-sm font-medium" style={{ color: '#000' }}>
+                  {loading
+                    ? '...'
+                    : `${user?.tokens ?? 0} crédito${(user?.tokens ?? 0) !== 1 ? 's' : ''}`}
                 </span>
-              </div>
+              </Link>
 
+              {/* Perfil */}
               <Link
                 href="/profile"
                 className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center"
