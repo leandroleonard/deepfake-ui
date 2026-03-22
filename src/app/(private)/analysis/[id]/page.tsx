@@ -443,7 +443,7 @@ export default function AnalysisResultPage() {
                 {/* Ações (sempre visíveis) */}
                 <div className="flex gap-3">
                     <Button
-                        onClick={() => router.push('/analysis/new')}
+                        onClick={() => router.push('/analysis')}
                         className="bg-black text-white hover:bg-gray-900 px-6 py-2 rounded-lg shadow-md"
                     >
                         Nova Análise

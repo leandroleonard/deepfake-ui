@@ -31,9 +31,9 @@ export default function Header() {
               </Link>
 
               <Link
-                href="/analysis/new"
+                href="/analysis"
                 className={`text-sm ${
-                  pathname === '/analysis/new' ? 'text-black' : 'text-gray-600 hover:text-black'
+                  pathname === '/analysis' ? 'text-black' : 'text-gray-600 hover:text-black'
                 }`}
               >
                 Nova Análise
