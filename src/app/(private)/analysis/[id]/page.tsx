@@ -47,7 +47,7 @@ function normalizeConfidence(raw: any): number | null {
     const n = typeof raw === 'number' ? raw : Number(raw);
     if (Number.isNaN(n)) return null;
     if (n <= 1) return n * 100;
-    return n; 
+    return n;
 }
 
 function predictionToIsDeepfake(pred: any): boolean | null {
@@ -153,6 +153,22 @@ export default function AnalysisResultPage() {
             prediction: boolean | null;
             used: boolean;
         }[] = [];
+
+        
+        const metaHit = results.some(r =>
+            r.type?.toLowerCase() === 'meta_ai' &&
+            (String(r.result?.prediction).toUpperCase() === 'FAKE' || r.result?.confidence === 1 || r.result?.confidence === 1.0)
+        );
+
+        if (metaHit) {
+            return {
+                score: 100,
+                isDeepfake: true,
+                contributions: [
+                    { type: 'meta_ai', weight: 1, confidence: 100, prediction: true, used: true }
+                ]
+            };
+        }
 
         let weightedSum = 0;
         let weightSum = 0;
