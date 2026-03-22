@@ -88,7 +88,7 @@ export default function AnalysisResultPage() {
             <div className="max-w-4xl mx-auto px-6 py-16 space-y-8">
                 <div className="text-center">
                     <h1 className="text-4xl font-semibold mb-2" style={{ color: '#000' }}>Resultado da Análise</h1>
-                    <p className="text-gray-500 text-sm">ID: {analysis.analysis_id}</p>
+                    <p className="text-gray-500 text-sm">ID: {analysis.id}</p>
                 </div>
 
                 {/* Pending */}
