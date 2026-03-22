@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import Header from '@/components/header';
 
-type AnalysisStatus = 'pending' | 'completed' | 'failed' | string;
+type AnalysisStatus = 'pending' | 'completed' | 'failed' | 'processing' | string;
 
 type ResultRow = {
     id: number;
@@ -35,19 +35,19 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 const DEFAULT_WEIGHTS: Record<string, number> = {
-    "deepfake_detection": 0.7,
-    "model": 0.7,
-    "lum": 0.15,
-    "swap": 0.15,
+    "deepfake_detection": 0.75,
+    "model": 0.75,
+    "lum": 0.10,
+    "swap": 0.05,
+    "jpeg": 0.10,
 };
 
 function normalizeConfidence(raw: any): number | null {
     if (raw === null || raw === undefined) return null;
     const n = typeof raw === 'number' ? raw : Number(raw);
     if (Number.isNaN(n)) return null;
-    // se vier 0-1, converte para 0-100
     if (n <= 1) return n * 100;
-    return n; // assume já estar em %
+    return n; 
 }
 
 function predictionToIsDeepfake(pred: any): boolean | null {
@@ -59,7 +59,6 @@ function predictionToIsDeepfake(pred: any): boolean | null {
 }
 
 function pickImageUrls(obj: any): string[] {
-    // Procura por valores string que parecem URLs/paths de imagem
     const urls: string[] = [];
     const visit = (v: any) => {
         if (!v) return;
@@ -93,11 +92,11 @@ export default function AnalysisResultPage() {
     const [error, setError] = useState<string>('');
 
     const status = analysis?.status;
-    const isPending = status === 'pending' || !status; // enquanto não carregou status, trate como pending p/ spinner
+    const isPending = status === 'pending' || !status;
+    const isProcessing = status == 'processing';
     const isCompleted = status === 'completed';
     const isFailed = status === 'failed';
 
-    // Polling: enquanto pending, continua batendo
     useEffect(() => {
         if (!analysisId) return;
 
@@ -213,7 +212,7 @@ export default function AnalysisResultPage() {
                 </div>
 
                 {/* Pending */}
-                {isPending && (
+                {(isPending || isProcessing) && (
                     <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-16 text-center space-y-6">
                         <Loader2 className="w-14 h-14 animate-spin mx-auto text-gray-400" />
                         <h3 className="text-2xl font-medium" style={{ color: '#000' }}>
