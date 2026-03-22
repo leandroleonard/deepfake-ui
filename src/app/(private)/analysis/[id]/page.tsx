@@ -410,7 +410,7 @@ export default function AnalysisResultPage() {
                                                                 <div key={url} className="border border-gray-200 rounded-lg overflow-hidden bg-gray-100">
                                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                                                     <img
-                                                                        src={url}
+                                                                        src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '')}${url}`}
                                                                         alt="Artefato / metadata"
                                                                         className="w-full h-48 object-contain"
                                                                     />

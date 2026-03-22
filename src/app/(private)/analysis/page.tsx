@@ -118,7 +118,7 @@ export default function NewAnalysisPage() {
                             <Upload className="w-10 h-10 text-gray-500" />
                         </div>
                         <h3 className="text-2xl font-medium mb-2" style={{color: '#000'}}>Arraste seu arquivo ou clique para selecionar</h3>
-                        <p className="text-gray-500 mb-6">Suporta imagens (JPG, PNG) e vídeos (MP4, MOV) até 50MB</p>
+                        <p className="text-gray-500 mb-6">Suporta imagens (JPG, PNG) e vídeos (MP4, MOV) até 5MB</p>
                         <button className="bg-black text-white hover:bg-gray-900 px-8 py-3 rounded-lg shadow-md transition">
                             Selecionar Arquivo
                         </button>
