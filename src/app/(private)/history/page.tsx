@@ -15,7 +15,7 @@ interface Result {
 
 interface Analysis {
   id: string;
-  status: 'pending' | 'completed' | 'failed';
+  status: 'pending' | 'completed' | 'failed' | 'processing';
   result?: Result;
   media_url?: string;
   media_type?: 'image' | 'video';
@@ -62,7 +62,7 @@ export default function HistoryPage() {
   };
 
   const StatusBadge = ({ analysis }: { analysis: Analysis }) => {
-    if (analysis.status === 'pending') {
+    if (analysis.status === 'pending' || analysis.status === 'processing') {
       return (
         <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-700">
           Processando...
@@ -79,7 +79,7 @@ export default function HistoryPage() {
     return (
       <span
         className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-          analysis.result?.isDeepfake
+          (analysis.result?.isDeepfake || !analysis.result)
             ? 'bg-red-100 text-red-700'
             : 'bg-green-100 text-green-700'
         }`}
@@ -162,13 +162,13 @@ export default function HistoryPage() {
                       <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
                         {analysis.media_type === 'image' ? (
                           <img
-                            src={analysis.media_url}
+                            src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '')}${analysis.media_url}`}
                             alt="preview"
                             className="w-full h-full object-cover"
                           />
                         ) : (
                           <video className="w-full h-full object-cover">
-                            <source src={analysis.media_url} />
+                            <source src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '')}${analysis.media_url}`} />
                           </video>
                         )}
                       </div>

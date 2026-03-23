@@ -174,17 +174,17 @@ export default function AnalysisResultPage() {
         let weightSum = 0;
 
         for (const [type, rows] of Object.entries(groups)) {
-            const weight = DEFAULT_WEIGHTS[type] ?? 0; // tipos desconhecidos não entram por padrão
+            const weight = DEFAULT_WEIGHTS[type] ?? 0; 
             if (weight <= 0) continue;
 
-            // regra: se vierem múltiplas linhas do mesmo type, usa a MAIOR confiança (você pode trocar por média)
+
             const confs = rows
                 .map((r) => normalizeConfidence(r.result?.confidence))
                 .filter((x): x is number => typeof x === 'number');
 
             const bestConf = confs.length ? Math.max(...confs) : null;
 
-            // prediction: se houver, tenta ler; senão inferimos pelo threshold depois
+            
             const preds = rows
                 .map((r) => predictionToIsDeepfake(r.result?.prediction))
                 .filter((x): x is boolean => typeof x === 'boolean');

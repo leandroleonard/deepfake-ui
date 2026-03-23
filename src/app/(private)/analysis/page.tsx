@@ -148,7 +148,7 @@ export default function NewAnalysisPage() {
                             </div>
 
                             <div className="flex-1 space-y-3">
-                                <h3 className="text-xl font-medium">{file.name}</h3>
+                                <h3 className="text-xl font-medium text-gray-600">{file.name}</h3>
                                 <p className="text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
 
                                 {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -168,7 +168,7 @@ export default function NewAnalysisPage() {
                                     <button
                                         onClick={handleReset}
                                         disabled={uploading}
-                                        className="border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
+                                        className="border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 text-gray-600"
                                     >
                                         Escolher Outro
                                     </button>

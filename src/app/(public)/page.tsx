@@ -73,10 +73,10 @@ export default function HomePage() {
               )}
             </div>
 
-            <div className="mt-10 flex items-center justify-center gap-2 text-sm text-gray-500">
+            {/* <div className="mt-10 flex items-center justify-center gap-2 text-sm text-gray-500">
               <Clock className="w-4 h-4" />
               Resultado em menos de 2 minutos
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
