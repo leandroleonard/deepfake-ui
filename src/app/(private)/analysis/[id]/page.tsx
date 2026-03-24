@@ -64,22 +64,15 @@ function pickImageUrls(obj: any): string[] {
         if (!v) return;
         if (typeof v === 'string') {
             const lower = v.toLowerCase();
-            const looksLikeImage =
-                lower.endsWith('.png') || lower.endsWith('.jpg') || lower.endsWith('.jpeg') || lower.endsWith('.webp');
-            const looksLikePath = lower.startsWith('/uploads/') || lower.startsWith('http://') || lower.startsWith('https://');
+            const looksLikeImage = lower.endsWith('.png') || lower.endsWith('.jpg') || lower.endsWith('.jpeg') || lower.endsWith('.webp');
+            const looksLikePath = lower.startsWith('/uploads/') || lower.startsWith('http');
             if (looksLikeImage && looksLikePath) urls.push(v);
             return;
         }
-        if (Array.isArray(v)) {
-            v.forEach(visit);
-            return;
-        }
-        if (typeof v === 'object') {
-            Object.values(v).forEach(visit);
-        }
+        if (Array.isArray(v)) { v.forEach(visit); return; }
+        if (typeof v === 'object') { Object.values(v).forEach(visit); }
     };
     visit(obj);
-    // remove duplicados
     return Array.from(new Set(urls));
 }
 
@@ -154,7 +147,7 @@ export default function AnalysisResultPage() {
             used: boolean;
         }[] = [];
 
-        
+
         const metaHit = results.some(r =>
             r.type?.toLowerCase() === 'meta_ai' &&
             (String(r.result?.prediction).toUpperCase() === 'FAKE' || r.result?.confidence === 1 || r.result?.confidence === 1.0)
@@ -174,7 +167,7 @@ export default function AnalysisResultPage() {
         let weightSum = 0;
 
         for (const [type, rows] of Object.entries(groups)) {
-            const weight = DEFAULT_WEIGHTS[type] ?? 0; 
+            const weight = DEFAULT_WEIGHTS[type] ?? 0;
             if (weight <= 0) continue;
 
 
@@ -184,7 +177,7 @@ export default function AnalysisResultPage() {
 
             const bestConf = confs.length ? Math.max(...confs) : null;
 
-            
+
             const preds = rows
                 .map((r) => predictionToIsDeepfake(r.result?.prediction))
                 .filter((x): x is boolean => typeof x === 'boolean');
@@ -373,6 +366,12 @@ export default function AnalysisResultPage() {
                             ) : (
                                 <div className="space-y-4">
                                     {results.map((r) => {
+                                        if (r.type == 'meta_ai') {
+                                            return;
+                                        }
+
+
+
                                         const conf = normalizeConfidence(r.result?.confidence);
                                         const pred = predictionToIsDeepfake(r.result?.prediction);
                                         const images = pickImageUrls(r.result);
@@ -395,7 +394,7 @@ export default function AnalysisResultPage() {
                                                     </div>
                                                 </div>
 
-                                                {(pred !== null || r.result?.prediction) && (
+                                                {((pred !== null || r.result?.prediction) && r.type == 'deepfake_detection') && (
                                                     <p className="mt-3 text-sm text-gray-700">
                                                         <span className="font-medium">Predição:</span>{' '}
                                                         {pred === null ? String(r.result?.prediction) : pred ? 'FAKE' : 'REAL'}
